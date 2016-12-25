@@ -55,7 +55,8 @@ function listDir(fullTargetPath) {
   return fs.readdirAsync(fullTargetPath)
     .map(node => ({
       parent: fullTargetPath,
-      path: path.join(fullTargetPath, node)
+      path: path.join(fullTargetPath, node),
+      name: node
     }))
     .map(node =>
       fs.statAsync(node.path)
@@ -131,7 +132,7 @@ nodes.filter(node => (
     dirs && node.stats.isDirectory() ||
     files && node.stats.isFile()
   ) &&
-  findPattern.test(node.path)
+  findPattern.test(node.name)
 )
 // Exclude if necessary.
 .filter(node => {
