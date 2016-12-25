@@ -147,7 +147,10 @@ nodes.filter(node => (
 // Calculate the new path.
 .map(node => {
   node.newPath = path.resolve(
-    node.parent + node.name.replace(findPattern, replacePattern)
+    path.join(
+      node.parent,
+      node.name.replace(findPattern, replacePattern)
+    )
   )
   return node
 })
