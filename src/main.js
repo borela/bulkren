@@ -41,7 +41,7 @@ let argv = yargs.usage('bulkren <path> <find> <replace> [exclude]')
     type: 'boolean'
   })
   .example(
-    'bulkren . /\\/(.+?)\\.scss$/ ../$1.css',
+    'bulkren . "/\\/(.+?)\\.scss$/" "../$1.css"',
     'Find nodes ending with ".scss", captures the name and move it to the ' +
     'parent directory while changing the extension to css.'
   )
