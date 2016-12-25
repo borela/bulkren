@@ -14,10 +14,11 @@ npm install -g bulkren
 bulkren <path> <find> <replace> [exclude]
 
 Options:
-  -n, --dry-run  Test the command.                                     [boolean]
-  -f, --files    Match files.                                          [boolean]
-  -d, --dirs     Match directories.                                    [boolean]
-  -h, --help     Show help                                             [boolean]
+  -n, --dry-run    Test the command.                                   [boolean]
+  -f, --files      Match files.                                        [boolean]
+  -d, --dirs       Match directories.                                  [boolean]
+  -r, --recursive  List the directories recursively.                   [boolean]
+  -h, --help       Show help                                           [boolean]
 
 Examples:
   bulkren . "/\/(.+?)\.scss$/" "../$1.css"  Find nodes ending with ".scss",

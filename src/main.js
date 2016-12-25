@@ -38,6 +38,7 @@ let argv = yargs.usage('bulkren <path> <find> <replace> [exclude]')
   })
   .option('r', {
     alias: 'recursive',
+    describe: 'List the directories recursively.',
     type: 'boolean'
   })
   .example(
