@@ -14,6 +14,7 @@ import 'colors'
 import fs from 'graceful-fs'
 import path from 'path'
 import Promise from 'bluebird'
+import sortBy from 'sort-array'
 import yargs from 'yargs'
 
 Promise.promisifyAll(fs)
@@ -87,7 +88,7 @@ try {
   process.exit(-1)
 }
 
-// Create the find regex.a
+// Create the find regex.
 try {
   let [, pattern, options] = findPattern.match(/^\/(.+)\/(.*?)$/)
   findPattern = new RegExp(pattern, options)
@@ -141,7 +142,7 @@ nodes.filter(node => (
   return true
 })
 // This is required so that we can work on the deepest nodes first.
-.then(nodes => nodes.sort().reverse())
+.then(nodes => sortBy(nodes, 'path').reverse())
 // Calculate the new path.
 .map(node => {
   node.newPath = path.resolve(
