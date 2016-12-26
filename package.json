@@ -1,13 +1,13 @@
 {
   "name": "bulkren",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Bulk rename utility.",
   "scripts": {
     "check": "flow check || exit 0",
     "clean": "rimraf \"build/!(.git)\"",
     "build": "run-s build:*",
     "build:clean": "npm run clean",
-    "build:target": "webpack --progress",
+    "build:target": "webpack --progress --display-error-details",
     "dev": "run-s dev:*",
     "dev:clean": "npm run clean",
     "dev:target": "webpack --progress --watch --display-error-details",
@@ -60,14 +60,10 @@
   },
   "homepage": "https://github.com/borela/bulkren#readme",
   "dependencies": {
-    "bluebird": "^3.4.7",
-    "colors": "^1.1.2",
-    "ctrine-preset-node": "^0.1.5",
-    "graceful-fs": "^4.1.11",
-    "sort-array": "^1.1.1",
-    "yargs": "^6.5.0"
+    "ctrine-preset-cli": "^1.0.0",
+    "ls-async": "^1.0.11"
   },
   "devDependencies": {
-    "ctrine-webpack-settings-node": "^0.2.2"
+    "ctrine-webpack-settings-cli": "^1.0.0"
   }
 }

@@ -11,13 +11,10 @@
 // the License.
 
 import 'colors'
-import fs from 'graceful-fs'
+import ls from 'ls-async'
 import path from 'path'
-import Promise from 'bluebird'
 import sortBy from 'sort-array'
 import yargs from 'yargs'
-
-Promise.promisifyAll(fs)
 
 let argv = yargs.usage('bulkren <path> <find> <replace> [exclude]')
   .option('n', {
@@ -50,33 +47,6 @@ let argv = yargs.usage('bulkren <path> <find> <replace> [exclude]')
   .alias('h', 'help')
   .help()
   .argv
-
-function listDir(fullTargetPath) {
-  return fs.readdirAsync(fullTargetPath)
-    .map(node => ({
-      parent: fullTargetPath,
-      path: path.join(fullTargetPath, node),
-      name: node
-    }))
-    .map(node =>
-      fs.statAsync(node.path)
-        .then(stats => ({...node, stats}))
-    )
-}
-
-function listDirRecursively(targetPath) {
-  let result = []
-  return Promise.all(
-      listDir(targetPath)
-        .each(node => result.push(node))
-        .filter(node => node.stats.isDirectory())
-        .map(node => listDirRecursively(node.path))
-    )
-    .each(subDirContents => {
-      result = result.concat(subDirContents)
-    })
-    .then(() => result)
-}
 
 // Extract arguments.
 let [targetPath, findPattern, replacePattern, excludePattern] = argv._
@@ -118,49 +88,45 @@ let {
 } = argv
 
 const DRY_LABEL = dry ? '[DRY]'.blue : ''
-const EXCLUDED_LABEL = '[EXCLUDED]'.yellow
 const FAILED_LABEL = '[FAILED]'.red
+const IGNORED_LABEL = '[IGNORED]'.yellow
 const RENAMED_LABEL = '[RENAMED]'.green
 
-// List the nodes.
-let nodes = recursive
-  ? listDirRecursively(targetPath)
-  : listDir(targetPath)
-
-// Filter.
-nodes.filter(node => (
-    dirs && node.stats.isDirectory() ||
-    files && node.stats.isFile()
-  ) &&
-  findPattern.test(node.name)
-)
-// Exclude if necessary.
-.filter(node => {
-  if (excludePattern && excludePattern.test(node.path)) {
-    console.log(DRY_LABEL, EXCLUDED_LABEL, node.path)
-    return false
-  }
-  return true
-})
-// This is required so that we can work on the deepest nodes first.
-.then(nodes => sortBy(nodes, 'path').reverse())
-// Calculate the new path.
-.map(node => {
-  node.newPath = path.resolve(
-    path.join(
-      node.parent,
-      node.name.replace(findPattern, replacePattern)
-    )
+ls(targetPath, recursive)
+  // Filter.
+  .filter(node => (
+      dirs && node.stats.isDirectory() ||
+      files && node.stats.isFile()
+    ) &&
+    findPattern.test(node.name)
   )
-  return node
-})
-.each(node => {
-  try {
-    if (!dry) {
-      fs.renameSync(node.path, node.newPath)
+  // Exclude if necessary.
+  .filter(node => {
+    if (excludePattern && excludePattern.test(node.path)) {
+      console.log(DRY_LABEL, IGNORED_LABEL, node.path)
+      return false
     }
-    console.log(DRY_LABEL, RENAMED_LABEL, node.path, '=>', node.newPath)
-  } catch (e) {
-    console.log(DRY_LABEL, FAILED_LABEL, node.path, '=>', node.newPath)
-  }
-})
+    return true
+  })
+  // This is required so that we can work on the deepest nodes first.
+  .then(nodes => sortBy(nodes, 'path').reverse())
+  // Calculate the new path.
+  .map(node => {
+    node.newPath = path.resolve(
+      path.join(
+        node.parent,
+        node.name.replace(findPattern, replacePattern)
+      )
+    )
+    return node
+  })
+  .each(node => {
+    try {
+      if (!dry) {
+        fs.renameSync(node.path, node.newPath)
+      }
+      console.log(DRY_LABEL, RENAMED_LABEL, node.path, '=>', node.newPath)
+    } catch (e) {
+      console.log(DRY_LABEL, FAILED_LABEL, node.path, '=>', node.newPath)
+    }
+  })

@@ -11,7 +11,7 @@ npm install -g bulkren
 ## Usage
 
 ```
-bulkren <path> <find> <replace> [exclude]
+bulkren <path> <find> <replace> [ignore]
 
 Options:
   -n, --dry-run    Test the command.                                   [boolean]
@@ -36,7 +36,7 @@ Regex pattern used to select a path.
 Pattern used for the new name. Use `$1, $2, $n...` to reference capturing groups
 from the find pattern.
 
-#### Exclude (Optional)
+#### Ignore (Optional)
 
-Regex used to exclude paths selected in the find pattern. Use `$1, $2, $n...` to
+Regex used to ignore paths selected in the find pattern. Use `$1, $2, $n...` to
 reference capturing groups from the find pattern.

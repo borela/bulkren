@@ -10,17 +10,18 @@
 // License for the specific language governing permissions and limitations under
 // the License.
 
-let settings = require('ctrine-webpack-settings-node')
-let webpack = require('webpack')
+module.exports = require('ctrine-webpack-settings-cli')
+// let settings = require('ctrine-webpack-settings-cli')
+// let webpack = require('webpack')
 
-settings.plugins.push(
-  new webpack.BannerPlugin({
-    banner: '#!/usr/bin/env node',
-    entryOnly: false,
-    raw: true
-  })
-)
+// settings.plugins.push(
+//   new webpack.BannerPlugin({
+//     banner: '#!/usr/bin/env node',
+//     entryOnly: false,
+//     raw: true
+//   })
+// )
 
-module.exports = settings
+// module.exports = settings
 
 
