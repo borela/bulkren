@@ -29,7 +29,7 @@ Examples:
 
 #### Find
 
-Regex pattern used to select a path.
+Regex pattern used to select a path. This pattern applies to the node’s name.
 
 #### Replace
 
@@ -38,5 +38,5 @@ from the find pattern.
 
 #### Ignore (Optional)
 
-Regex used to ignore paths selected in the find pattern. Use `$1, $2, $n...` to
-reference capturing groups from the find pattern.
+Regex used to ignore paths selected in the find pattern. This pattern applies to
+the entire path.
