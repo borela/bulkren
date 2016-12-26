@@ -1,6 +1,6 @@
 {
   "name": "bulkren",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Bulk rename utility.",
   "scripts": {
     "check": "flow check || exit 0",
@@ -64,6 +64,6 @@
     "ls-async": "^1.0.11"
   },
   "devDependencies": {
-    "ctrine-webpack-settings-cli": "^1.0.0"
+    "ctrine-webpack-settings-cli": "^1.0.1"
   }
 }

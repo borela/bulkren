@@ -11,17 +11,3 @@
 // the License.
 
 module.exports = require('ctrine-webpack-settings-cli')
-// let settings = require('ctrine-webpack-settings-cli')
-// let webpack = require('webpack')
-
-// settings.plugins.push(
-//   new webpack.BannerPlugin({
-//     banner: '#!/usr/bin/env node',
-//     entryOnly: false,
-//     raw: true
-//   })
-// )
-
-// module.exports = settings
-
-
