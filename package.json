@@ -1,6 +1,6 @@
 {
   "name": "bulkren",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Bulk rename utility.",
   "scripts": {
     "check": "flow check || exit 0",
@@ -62,7 +62,7 @@
   "homepage": "https://github.com/borela/bulkren#readme",
   "dependencies": {
     "ctrine-preset-cli": "^1.0.0",
-    "ls-async": "^2.0.0"
+    "ls-async": "^2.0.1"
   },
   "devDependencies": {
     "ctrine-webpack-settings-cli": "^1.0.1"
