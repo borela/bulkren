@@ -17,7 +17,7 @@ import path from 'path'
 import sortBy from 'sort-array'
 import yargs from 'yargs'
 
-let argv = yargs.usage('bulkren <path> <find> <replace> [exclude]')
+let argv = yargs.usage('bulkren <path> <find> <replace> [ignore]')
   .option('n', {
     alias: 'dry-run',
     describe: 'Test the command.',
@@ -42,7 +42,7 @@ let argv = yargs.usage('bulkren <path> <find> <replace> [exclude]')
     'bulkren . "/foo/i" "../bar" "/baz/" -d',
     'Find files with the name foo(case insensitive) and move it to the parent directory. ' +
     'Any path containing “baz” is ignored. Directories named “foo” won’t be affected ' +
-    'because of the flag “-d”'
+    'because of the flag “-d”.'
   )
   .help()
   .argv
