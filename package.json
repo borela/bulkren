@@ -1,6 +1,6 @@
 {
   "name": "bulkren",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Bulk rename utility.",
   "scripts": {
     "check": "flow check || exit 0",

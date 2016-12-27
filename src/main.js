@@ -39,9 +39,10 @@ let argv = yargs.usage('bulkren <path> <find> <replace> [exclude]')
     type: 'boolean'
   })
   .example(
-    'bulkren . "/\\/(.+?)\\.scss$/" "../$1.css"',
-    'Find nodes ending with ".scss", captures the name and move it to the ' +
-    'parent directory while changing the extension to css.'
+    'bulkren . "/foo/i" "../bar" "/baz/" -d',
+    'Find files with the name foo(case insensitive) and move it to the parent directory. ' +
+    'Any path containing “baz” is ignored. Directories named “foo” won’t be affected ' +
+    'because of the flag “-d”'
   )
   .help()
   .argv
