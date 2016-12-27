@@ -9,6 +9,7 @@
 // WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 // License for the specific language governing permissions and limitations under
 // the License.
+// @flow
 
 import 'colors'
 import ls from 'ls-async'
@@ -23,16 +24,14 @@ let argv = yargs.usage('bulkren <path> <find> <replace> [exclude]')
     type: 'boolean'
   })
   .option('f', {
-    alias: 'files',
-    describe: 'Match files.',
-    type: 'boolean',
-    default: undefined
+    alias: 'ignore-files',
+    describe: 'Ignore files.',
+    type: 'boolean'
   })
   .option('d', {
-    alias: 'dirs',
-    describe: 'Match directories.',
-    type: 'boolean',
-    default: undefined
+    alias: 'ignore-dirs',
+    describe: 'Ignore directories.',
+    type: 'boolean'
   })
   .option('r', {
     alias: 'recursive',
@@ -44,12 +43,11 @@ let argv = yargs.usage('bulkren <path> <find> <replace> [exclude]')
     'Find nodes ending with ".scss", captures the name and move it to the ' +
     'parent directory while changing the extension to css.'
   )
-  .alias('h', 'help')
   .help()
   .argv
 
 // Extract arguments.
-let [targetPath, findPattern, replacePattern, excludePattern] = argv._
+let [targetPath, findPattern, replacePattern, ignorePattern] = argv._
 
 // Get the full target path.
 try {
@@ -68,55 +66,39 @@ try {
   process.exit(-1)
 }
 
-// Create the exclusion regex.
-if (excludePattern) {
+// Create the ignore regex.
+if (ignorePattern) {
   try {
-    let [, pattern, options] = excludePattern.match(/^\/(.+)\/(.*?)$/)
-    excludePattern = new RegExp(pattern, options)
+    let [, pattern, options] = ignorePattern.match(/^\/(.+)\/(.*?)$/)
+    ignorePattern = new RegExp(pattern, options)
   } catch (e) {
-    console.log(`Invalid exclusion pattern "${excludePattern}".`)
+    console.log(`Invalid ignore pattern "${ignorePattern}".`)
     process.exit(-1)
   }
 }
 
 // Extract the flags.
-let {
-  d:dirs = true,
-  f:files = true,
-  r:recursive,
-  n:dry
-} = argv
+let {d:ignoreDirs, f:ignoreFiles, r:recursive, n:dry} = argv
 
 const DRY_LABEL = dry ? '[DRY]'.blue : ''
 const FAILED_LABEL = '[FAILED]'.red
-const IGNORED_LABEL = '[IGNORED]'.yellow
 const RENAMED_LABEL = '[RENAMED]'.green
 
-ls(targetPath, recursive)
+ls(targetPath, {
+  ignore: ignorePattern,
+  recursive
+})
   // Filter.
-  .filter(node => (
-      dirs && node.stats.isDirectory() ||
-      files && node.stats.isFile()
-    ) &&
-    findPattern.test(node.name)
-  )
-  // Exclude if necessary.
-  .filter(node => {
-    if (excludePattern && excludePattern.test(node.path)) {
-      console.log(DRY_LABEL, IGNORED_LABEL, node.path)
-      return false
-    }
-    return true
-  })
+  .filter(node => !ignoreDirs ? true : !node.stats.isDirectory())
+  .filter(node => !ignoreFiles ? true : !node.stats.isFile())
+  .filter(node => findPattern.test(node.name))
   // This is required so that we can work on the deepest nodes first.
   .then(nodes => sortBy(nodes, 'path').reverse())
   // Calculate the new path.
   .map(node => {
     node.newPath = path.resolve(
-      path.join(
-        node.parent,
-        node.name.replace(findPattern, replacePattern)
-      )
+      node.parent,
+      node.name.replace(findPattern, replacePattern)
     )
     return node
   })

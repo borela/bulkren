@@ -15,8 +15,8 @@ bulkren <path> <find> <replace> [ignore]
 
 Options:
   -n, --dry-run    Test the command.                                   [boolean]
-  -f, --files      Match files.                                        [boolean]
-  -d, --dirs       Match directories.                                  [boolean]
+  -f, --files      Ignore files.                                       [boolean]
+  -d, --dirs       Ignore directories.                                 [boolean]
   -r, --recursive  List the directories recursively.                   [boolean]
   -h, --help       Show help                                           [boolean]
 

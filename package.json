@@ -1,6 +1,6 @@
 {
   "name": "bulkren",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "Bulk rename utility.",
   "scripts": {
     "check": "flow check || exit 0",
@@ -21,6 +21,7 @@
   },
   "babel": {
     "plugins": [
+      "transform-flow-strip-types",
       "transform-decorators-legacy",
       "transform-class-properties",
       "transform-export-extensions",
@@ -61,7 +62,7 @@
   "homepage": "https://github.com/borela/bulkren#readme",
   "dependencies": {
     "ctrine-preset-cli": "^1.0.0",
-    "ls-async": "^1.0.11"
+    "ls-async": "^2.0.0"
   },
   "devDependencies": {
     "ctrine-webpack-settings-cli": "^1.0.1"
