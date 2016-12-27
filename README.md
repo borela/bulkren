@@ -31,14 +31,14 @@ Examples:
 
 #### Find
 
-Regex pattern used to select a path. This pattern applies to the node’s name.
+Regex pattern used to select a path. It applies to the node’s name.
 
 #### Replace
 
-Pattern used for the new name. Use `$1, $2, $n...` to reference capturing groups
+String used for the new name. Use `$1, $2, $n...` to reference capturing groups
 from the find pattern.
 
 #### Ignore (Optional)
 
-Regex used to ignore paths selected in the find pattern. This pattern applies to
-the entire path.
+Regex pattern used to ignore paths selected using find pattern. It applies to the
+entire path.
