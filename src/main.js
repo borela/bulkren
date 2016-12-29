@@ -13,38 +13,73 @@
 
 import 'colors'
 import ls from 'ls-async'
+import toRegexp from 'str-to-regexp'
 import path from 'path'
 import sortBy from 'sort-array'
+import yargonaut from 'yargonaut'
 import yargs from 'yargs'
 
-let argv = yargs.usage('bulkren <path> <find> <replace> [ignore]')
+import packageInfo from '../package'
+
+yargonaut.style('blue')
+  .errorsStyle('red')
+
+let argv = yargs.usage(
+    "bulkren <path> <find> <replace> [ignore] [options]"
+    + "\n\n"
+    + "path \t Path to search the nodes."
+    + "\n\n"
+    + "find \t Regex used to match the node’s name. It doesn’t apply to the"
+    + "        entire path string."
+    + "\n\n"
+    + "replace \t A pattern for the new name. Use $1, $2, $n... to reference"
+    + "           capturing groups from the find pattern."
+    + "\n\n"
+    + "ignore \t Regex used to ignore nodes. It applies to the entire path."
+  )
+  .demand(3)
   .option('n', {
     alias: 'dry-run',
-    describe: 'Test the command.',
-    type: 'boolean'
-  })
-  .option('f', {
-    alias: 'ignore-files',
-    describe: 'Ignore files.',
+    description: 'Test the command.',
     type: 'boolean'
   })
   .option('d', {
     alias: 'ignore-dirs',
-    describe: 'Ignore directories.',
+    description: 'Ignore directories.',
+    type: 'boolean'
+  })
+  .option('f', {
+    alias: 'ignore-files',
+    description: 'Ignore files.',
     type: 'boolean'
   })
   .option('r', {
     alias: 'recursive',
-    describe: 'List the directories recursively.',
+    description: 'List the directories recursively.',
     type: 'boolean'
   })
   .example(
-    'bulkren . "/foo/i" "../bar" "/baz/" -d',
-    'Find files with the name foo(case insensitive) and move it to the parent directory. ' +
-    'Any path containing “baz” is ignored. Directories named “foo” won’t be affected ' +
-    'because of the flag “-d”.'
+    'bulkren . "/foo/i" ../bar baz -d',
+    "Find nodes with the name “foo”(case insensitive), move it to the parent"
+    + " directory and rename it to “bar”. Any path containing “baz” is ignored."
+    + " Directories named “foo” won’t be affected because of the flag “-d”."
   )
+  .example('','')
+  .example(
+    'bulkren . foo ../bar baz -d',
+    "Find nodes with the name “foo”(case sensitive), move it to the parent"
+    + " directory and rename it to “bar”. Any path containing “baz” is ignored."
+    + " Directories named “foo” won’t be affected because of the flag “-d”."
+  )
+  .example('','')
+  .example(
+    'bulkren . "/(foo)bar/i" "$1baz" -d',
+    "Find nodes with the name “foobar”(case insensitive), and rename it to “foobaz”."
+    + "  Directories named “foobar” won’t be affected because of the flag “-d”."
+  )
+  .showHelpOnFail(true)
   .help()
+  .version(() => packageInfo.version)
   .argv
 
 // Extract arguments.
@@ -60,8 +95,7 @@ try {
 
 // Create the find regex.
 try {
-  let [, pattern, options] = findPattern.match(/^\/(.+)\/(.*?)$/)
-  findPattern = new RegExp(pattern, options)
+  findPattern = toRegexp(findPattern)
 } catch (e) {
   console.log(`Invalid find pattern "${findPattern}".`)
   process.exit(-1)
@@ -70,8 +104,7 @@ try {
 // Create the ignore regex.
 if (ignorePattern) {
   try {
-    let [, pattern, options] = ignorePattern.match(/^\/(.+)\/(.*?)$/)
-    ignorePattern = new RegExp(pattern, options)
+    ignorePattern = toRegexp(ignorePattern)
   } catch (e) {
     console.log(`Invalid ignore pattern "${ignorePattern}".`)
     process.exit(-1)

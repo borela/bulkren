@@ -1,6 +1,6 @@
 {
   "name": "bulkren",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "Bulk rename utility.",
   "license": "Apache-2.0",
   "bin": {
@@ -61,6 +61,8 @@
     "colors": "^1.1.2",
     "ls-async": "^2.1.0",
     "sort-array": "^1.1.1",
+    "str-to-regexp": "^1.0.0",
+    "yargonaut": "^1.1.2",
     "yargs": "^6.5.0"
   },
   "devDependencies": {
