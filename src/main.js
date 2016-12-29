@@ -122,19 +122,18 @@ ls(targetPath, {
   ignore: ignorePattern,
   recursive
 })
-  // Filter.
   .filter(node => !ignoreDirs ? true : !node.stats.isDirectory())
   .filter(node => !ignoreFiles ? true : !node.stats.isFile())
   .filter(node => findPattern.test(node.name))
   // This is required so that we can work on the deepest nodes first.
   .then(nodes => sortBy(nodes, 'path').reverse())
   // Calculate the new path.
-  .map(node => {
-    node.newPath = path.resolve(
+  .map(node => ({
+    ...node,
+    newPath: path.resolve(
       node.parent,
       node.name.replace(findPattern, replacePattern)
     )
-    return node
   })
   .each(node => {
     try {
