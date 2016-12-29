@@ -134,7 +134,7 @@ ls(targetPath, {
       node.parent,
       node.name.replace(findPattern, replacePattern)
     )
-  })
+  }))
   .each(node => {
     try {
       if (!dry) {
