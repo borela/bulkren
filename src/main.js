@@ -13,9 +13,9 @@
 
 import 'colors'
 import ls from 'ls-async'
-import toRegexp from 'str-to-regexp'
 import path from 'path'
 import sortBy from 'sort-array'
+import toRegexp from 'str-to-regexp'
 import yargonaut from 'yargonaut'
 import yargs from 'yargs'
 
