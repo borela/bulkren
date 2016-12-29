@@ -2,22 +2,20 @@
   "name": "bulkren",
   "version": "2.1.2",
   "description": "Bulk rename utility.",
+  "license": "Apache-2.0",
+  "bin": {
+    "bulkren": "build/index.js"
+  },
   "scripts": {
     "check": "flow check || exit 0",
     "clean": "rimraf \"build/!(.git)\"",
-    "build": "run-s build:*",
-    "build:clean": "npm run clean",
+    "build": "npm run clean && run-p build:*",
     "build:target": "webpack --progress --display-error-details",
-    "dev": "run-s dev:*",
-    "dev:clean": "npm run clean",
+    "dev": "npm run clean && run-p dev:*",
     "dev:target": "webpack --progress --watch --display-error-details",
-    "dist": "run-s dist:*",
-    "dist:clean": "npm run clean",
+    "dist": "npm run clean && run-p dist:*",
     "dist:target": "cross-env NODE_ENV=production webpack --progress --display-error-details",
     "start": "npm run dev"
-  },
-  "bin": {
-    "bulkren": "build/index.js"
   },
   "babel": {
     "plugins": [
@@ -42,6 +40,10 @@
     "type": "git",
     "url": "git+https://github.com/borela/bulkren.git"
   },
+  "bugs": {
+    "url": "https://github.com/borela/bulkren/issues"
+  },
+  "homepage": "https://github.com/borela/bulkren#readme",
   "keywords": [
     "bulk",
     "rename",
@@ -55,11 +57,6 @@
       "url": "http://www.borela.tech"
     }
   ],
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/borela/bulkren/issues"
-  },
-  "homepage": "https://github.com/borela/bulkren#readme",
   "dependencies": {
     "ctrine-preset-cli": "^1.0.0",
     "ls-async": "^2.0.1"
