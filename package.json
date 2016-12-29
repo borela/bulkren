@@ -1,6 +1,6 @@
 {
   "name": "bulkren",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Bulk rename utility.",
   "license": "Apache-2.0",
   "bin": {
@@ -64,6 +64,6 @@
     "yargs": "^6.5.0"
   },
   "devDependencies": {
-    "ctrine-webpack-settings-cli": "^1.0.1"
+    "ctrine-webpack-settings-cli": "^2.0.1"
   }
 }
