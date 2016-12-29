@@ -1,6 +1,6 @@
 {
   "name": "bulkren",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "Bulk rename utility.",
   "license": "Apache-2.0",
   "bin": {
