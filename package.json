@@ -58,8 +58,10 @@
     }
   ],
   "dependencies": {
-    "ctrine-preset-cli": "^1.0.0",
-    "ls-async": "^2.0.1"
+    "colors": "^1.1.2",
+    "ls-async": "^2.1.0",
+    "sort-array": "^1.1.1",
+    "yargs": "^6.5.0"
   },
   "devDependencies": {
     "ctrine-webpack-settings-cli": "^1.0.1"
