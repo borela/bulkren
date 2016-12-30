@@ -4,6 +4,7 @@
   "description": "Bulk rename utility.",
   "license": "Apache-2.0",
   "bin": {
+    "bren": "build/index.js",
     "bulkren": "build/index.js"
   },
   "scripts": {
