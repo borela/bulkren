@@ -158,6 +158,8 @@ ls(targetPath, {
   // Execute the action if its not a dry run.
   .each(node => dry
     ? node
+    // We want this to be synchronous to make sure we are renaming the deepest
+    // nodes first.
     : fs.renameSync(node.path, node.newPath)
         .then(() => node)
   )
