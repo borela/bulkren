@@ -26,7 +26,9 @@ yargonaut.style('blue')
   .errorsStyle('red')
 
 let argv = yargs.usage(
-    "bulkren <path> <find> <replace> [ignore] [options]"
+    "bren \t <path> <find> <replace> [ignore] [options]"
+    + "\n"
+    + "bulkren \t <path> <find> <replace> [ignore] [options]"
     + "\n\n"
     + "<path> \t Path to search the nodes."
     + "\n\n"
@@ -65,21 +67,21 @@ let argv = yargs.usage(
     type: 'boolean'
   })
   .example(
-    'bulkren . "/foo/i" ../bar baz -d',
+    'bren . "/foo/i" ../bar baz -d',
     "Find nodes with the name “foo”(case insensitive), move it to the parent"
     + " directory and rename it to “bar”. Any path containing “baz” is ignored."
     + " Directories named “foo” won’t be affected because of the flag “-d”."
   )
   .example('','')
   .example(
-    'bulkren . foo ../bar baz -d',
+    'bren . foo ../bar baz -d',
     "Find nodes with the name “foo”(case sensitive), move it to the parent"
     + " directory and rename it to “bar”. Any path containing “baz” is ignored."
     + " Directories named “foo” won’t be affected because of the flag “-d”."
   )
   .example('','')
   .example(
-    'bulkren . "/(foo)bar/i" "$1baz" -d',
+    'bren . "/(foo)bar/i" "$1baz" -d',
     "Find nodes with the name “foobar”(case insensitive), and rename it to “foobaz”."
     + "  Directories named “foobar” won’t be affected because of the flag “-d”."
   )

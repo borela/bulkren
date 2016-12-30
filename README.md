@@ -11,7 +11,8 @@ npm install -g bulkren
 ## Usage
 
 ```
-bulkren <path> <find> <replace> [ignore] [options]
+bren       <path> <find> <replace> [ignore] [options]
+bulkren    <path> <find> <replace> [ignore] [options]
 
 <path>     Path to search the nodes.
 
@@ -33,24 +34,22 @@ Options:
   --version           Show bulkren version.                            [boolean]
 
 Examples:
-  bulkren . "/foo/i" ../bar baz -d    Find nodes with the name “foo”(case
-                                      insensitive), move it to the parent
-                                      directory and rename it to “bar”. Any path
-                                      containing “baz” is ignored. Directories
-                                      named “foo” won’t be affected because of
-                                      the flag “-d”.
+  bren . "/foo/i" ../bar baz -d    Find nodes with the name “foo”(case
+                                   insensitive), move it to the parent directory
+                                   and rename it to “bar”. Any path containing
+                                   “baz” is ignored. Directories named “foo”
+                                   won’t be affected because of the flag “-d”.
 
-  bulkren . foo ../bar baz -d         Find nodes with the name “foo”(case
-                                      sensitive), move it to the parent
-                                      directory and rename it to “bar”. Any path
-                                      containing “baz” is ignored. Directories
-                                      named “foo” won’t be affected because of
-                                      the flag “-d”.
+  bren . foo ../bar baz -d         Find nodes with the name “foo”(case
+                                   sensitive), move it to the parent directory
+                                   and rename it to “bar”. Any path containing
+                                   “baz” is ignored. Directories named “foo”
+                                   won’t be affected because of the flag “-d”.
 
-  bulkren . "/(foo)bar/i" "$1baz" -d  Find nodes with the name “foobar”(case
-                                      insensitive), and rename it to “foobaz”.
-                                      Directories named “foobar” won’t be
-                                      affected because of the flag “-d”.
+  bren . "/(foo)bar/i" "$1baz" -d  Find nodes with the name “foobar”(case
+                                   insensitive), and rename it to “foobaz”.
+                                   Directories named “foobar” won’t be affected
+                                   because of the flag “-d”.
 ```
 ## Preview
 
