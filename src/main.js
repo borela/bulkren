@@ -173,20 +173,14 @@ ls(targetPath, {
     let nameDiff = diffChars(node.name, node.newName)
 
     let oldPath = nameDiff.filter(char => !char.added)
-      .reduce((result, {removed, value}) => {
-        result += removed
-          ? chalk.red(value)
-          : value
-        return result
-      }, parent)
+      .reduce((result, {removed, value}) =>
+        result + (removed ? chalk.red(value) : value)
+      , parent)
 
     let newPath = nameDiff.filter(char => !char.removed)
-      .reduce((result, {added, value}) => {
-        result += added
-          ? chalk.green(value)
-          : value
-        return result
-      }, parent)
+      .reduce((result, {added, value}) =>
+        result + (added ? chalk.green(value) : value)
+      , parent)
 
     log(oldPath, chalk.blue('=>'))
     log(newPath)
