@@ -13,23 +13,24 @@ npm install -g bulkren
 ```
 bulkren <path> <find> <replace> [ignore] [options]
 
-path     Path to search the nodes.
+<path>     Path to search the nodes.
 
-find     Regex used to match the node’s name. It doesn’t apply to the
-         entire path string.
+<find>     Regex used to match the node’s name. It applies only to the
+           node’s name, not the entire path.
 
-replace  A pattern for the new name. Use $1, $2, $n... to reference
-         capturing groups from the find pattern.
+<replace>  A pattern for the new name. Use $1, $2, $n... to reference
+           capturing groups from the find pattern.
 
-ignore   Regex used to ignore nodes. It applies to the entire path.
+[ignore]   Regex used to ignore nodes. It applies to the entire path.
 
 Options:
   -n, --dry-run       Test the command.                                [boolean]
   -d, --ignore-dirs   Ignore directories.                              [boolean]
   -f, --ignore-files  Ignore files.                                    [boolean]
   -r, --recursive     List the directories recursively.                [boolean]
-  --help              Show help                                        [boolean]
-  --version           Show version number                              [boolean]
+  -s, --silent        Don’t output anything to the standard outputs.   [boolean]
+  --help              Show usage instructions.                         [boolean]
+  --version           Show bulkren version.                            [boolean]
 
 Examples:
   bulkren . "/foo/i" ../bar baz -d    Find nodes with the name “foo”(case
@@ -51,3 +52,6 @@ Examples:
                                       Directories named “foobar” won’t be
                                       affected because of the flag “-d”.
 ```
+## Preview
+
+![Dry run output](./preview/dry-run-output.png)

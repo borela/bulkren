@@ -11,13 +11,14 @@
 // the License.
 // @flow
 
-import 'colors'
+import chalk from 'chalk'
 import ls from 'ls-async'
 import path from 'path'
 import sortBy from 'sort-array'
 import toRegexp from 'str-to-regexp'
 import yargonaut from 'yargonaut'
 import yargs from 'yargs'
+import {diffChars} from 'diff'
 
 import packageInfo from '../package'
 
@@ -27,15 +28,15 @@ yargonaut.style('blue')
 let argv = yargs.usage(
     "bulkren <path> <find> <replace> [ignore] [options]"
     + "\n\n"
-    + "path \t Path to search the nodes."
+    + "<path> \t Path to search the nodes."
     + "\n\n"
-    + "find \t Regex used to match the node’s name. It doesn’t apply to the"
-    + "        entire path string."
+    + "<find> \t Regex used to match the node’s name. It applies only to the"
+    + "          node’s name, not the entire path."
     + "\n\n"
-    + "replace \t A pattern for the new name. Use $1, $2, $n... to reference"
-    + "           capturing groups from the find pattern."
+    + "<replace> \t A pattern for the new name. Use $1, $2, $n... to reference"
+    + "             capturing groups from the find pattern."
     + "\n\n"
-    + "ignore \t Regex used to ignore nodes. It applies to the entire path."
+    + "[ignore] \t Regex used to ignore nodes. It applies to the entire path."
   )
   .demand(3)
   .option('n', {
@@ -58,6 +59,11 @@ let argv = yargs.usage(
     description: 'List the directories recursively.',
     type: 'boolean'
   })
+  .option('s', {
+    alias: 'silent',
+    description: 'Don’t output anything to the standard outputs.',
+    type: 'boolean'
+  })
   .example(
     'bulkren . "/foo/i" ../bar baz -d',
     "Find nodes with the name “foo”(case insensitive), move it to the parent"
@@ -78,27 +84,41 @@ let argv = yargs.usage(
     + "  Directories named “foobar” won’t be affected because of the flag “-d”."
   )
   .showHelpOnFail(true)
-  .help()
-  .version(() => packageInfo.version)
+  .help(
+    'help',
+    'Show usage instructions.'
+  )
+  .version(
+    'version',
+    `Show ${packageInfo.name} version.`,
+    () => packageInfo.version
+  )
   .argv
 
-// Extract arguments.
 let [targetPath, findPattern, replacePattern, ignorePattern] = argv._
+let {d:ignoreDirs, f:ignoreFiles, r:recursive, n:dry, s:silent} = argv
+
+function error(...args) {
+  console.error(...args)
+  process.exit(-1)
+}
+
+function log(...args) {
+  console.log(...args)
+}
 
 // Get the full target path.
 try {
   targetPath = path.resolve(targetPath)
 } catch (e) {
-  console.log(`Invalid target path "${targetPath}".`)
-  process.exit(-1)
+  error(`Invalid target path "${targetPath}".`)
 }
 
 // Create the find regex.
 try {
   findPattern = toRegexp(findPattern)
 } catch (e) {
-  console.log(`Invalid find pattern "${findPattern}".`)
-  process.exit(-1)
+  error(`Invalid find pattern "${findPattern}".`)
 }
 
 // Create the ignore regex.
@@ -106,17 +126,13 @@ if (ignorePattern) {
   try {
     ignorePattern = toRegexp(ignorePattern)
   } catch (e) {
-    console.log(`Invalid ignore pattern "${ignorePattern}".`)
-    process.exit(-1)
+    error(`Invalid ignore pattern "${ignorePattern}".`)
   }
 }
 
-// Extract the flags.
-let {d:ignoreDirs, f:ignoreFiles, r:recursive, n:dry} = argv
-
-const DRY_LABEL = dry ? '[DRY]'.blue : ''
-const FAILED_LABEL = '[FAILED]'.red
-const RENAMED_LABEL = '[RENAMED]'.green
+const DRY_LABEL = dry ? chalk.blue('[DRY]') : ''
+const FAILED_LABEL = chalk.red('[FAILED]')
+const RENAMED_LABEL = chalk.green('[RENAMED]')
 
 ls(targetPath, {
   ignore: ignorePattern,
@@ -127,21 +143,48 @@ ls(targetPath, {
   .filter(node => findPattern.test(node.name))
   // This is required so that we can work on the deepest nodes first.
   .then(nodes => sortBy(nodes, 'path').reverse())
-  // Calculate the new path.
-  .map(node => ({
-    ...node,
-    newPath: path.resolve(
-      node.parent,
-      node.name.replace(findPattern, replacePattern)
-    )
-  }))
-  .each(node => {
-    try {
-      if (!dry) {
-        fs.renameSync(node.path, node.newPath)
-      }
-      console.log(DRY_LABEL, RENAMED_LABEL, node.path, '=>', node.newPath)
-    } catch (e) {
-      console.log(DRY_LABEL, FAILED_LABEL, node.path, '=>', node.newPath)
+  // Calculate the new path and name.
+  .map(node => {
+    let newName = node.name.replace(findPattern, replacePattern)
+    let newPath = path.join(node.parent, newName)
+    return {
+      ...node,
+      newPath,
+      newName
     }
+  })
+  // Execute the action if its not a dry run.
+  .each(node => dry
+    ? node
+    : fs.renameSync(node.path, node.newPath)
+        .then(() => node)
+  )
+  // Check if it needs to output any messages.
+  .then(nodes => silent ? [] : nodes)
+  // Output the sucess message.
+  .each(node => {
+    log(DRY_LABEL, RENAMED_LABEL)
+
+    let parent = node.parent + path.sep
+    let nameDiff = diffChars(node.name, node.newName)
+
+    let oldPath = nameDiff.filter(char => !char.added)
+      .reduce((result, {removed, value}) => {
+        result += removed
+          ? chalk.red(value)
+          : value
+        return result
+      }, parent)
+
+    let newPath = nameDiff.filter(char => !char.removed)
+      .reduce((result, {added, value}) => {
+        result += added
+          ? chalk.green(value)
+          : value
+        return result
+      }, parent)
+
+    log(oldPath)
+    log(newPath)
+    log('')
   })
