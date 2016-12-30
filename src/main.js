@@ -186,7 +186,7 @@ ls(targetPath, {
         return result
       }, parent)
 
-    log(oldPath)
+    log(oldPath, chalk.blue('=>'))
     log(newPath)
     log('')
   })
