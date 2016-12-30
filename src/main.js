@@ -149,11 +149,7 @@ ls(targetPath, {
   .map(node => {
     let newName = node.name.replace(findPattern, replacePattern)
     let newPath = path.join(node.parent, newName)
-    return {
-      ...node,
-      newPath,
-      newName
-    }
+    return {...node, newPath, newName}
   })
   // Execute the action if its not a dry run.
   .each(node => dry
