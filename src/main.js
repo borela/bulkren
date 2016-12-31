@@ -12,6 +12,7 @@
 // @flow
 
 import chalk from 'chalk'
+import fs from 'graceful-fs'
 import ls from 'ls-async'
 import path from 'path'
 import sortBy from 'sort-array'
