@@ -1,6 +1,6 @@
 {
   "name": "bulkren",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "Bulk rename utility.",
   "license": "Apache-2.0",
   "bin": {
@@ -65,6 +65,7 @@
     "graceful-fs": "^4.1.11",
     "ls-async": "^3.0.0",
     "sort-array": "^1.1.1",
+    "source-map-support": "^0.4.8",
     "str-to-regexp": "^1.0.0",
     "yargonaut": "^1.1.2",
     "yargs": "^6.5.0"
