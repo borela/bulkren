@@ -138,10 +138,10 @@ const RENAMED_LABEL = chalk.green('[RENAMED]')
 
 ls(targetPath, {
   ignore: ignorePattern,
+  ignoreDirs,
+  ignoreFiles,
   recursive
 })
-  .filter(node => !ignoreDirs ? true : !node.stats.isDirectory())
-  .filter(node => !ignoreFiles ? true : !node.stats.isFile())
   .filter(node => findPattern.test(node.name))
   // This is required so that we can work on the deepest nodes first.
   .then(nodes => sortBy(nodes, 'path').reverse())
