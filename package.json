@@ -1,7 +1,7 @@
 {
   "name": "bulkren",
-  "version": "3.1.3",
-  "description": "Bulk rename utility.",
+  "version": "3.4.0",
+  "description": "Bulk rename utility that uses regex instead of globbing.",
   "license": "Apache-2.0",
   "bin": {
     "bren": "build/index.js",
