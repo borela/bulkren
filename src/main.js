@@ -99,7 +99,12 @@ let argv = yargs.usage(
   .argv
 
 let [targetPath, findPattern, replacePattern, ignorePattern] = argv._
-let {d:ignoreDirs, f:ignoreFiles, r:recursive, n:dry, s:silent} = argv
+
+let ignoreDirs = argv.d || argv['ignore-dirs']
+let ignoreFiles = argv.f || argv['ignore-files']
+let recursive = argv.r || argv['recursive']
+let dry = argv.n || argv['dry']
+let silent = argv.s || argv['silent']
 
 function error(...args) {
   console.error(...args)
