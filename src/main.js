@@ -41,9 +41,9 @@ let argv = yargs.usage(
     + "\n\n"
     + "[ignore] \t Regex used to ignore nodes. It applies to the entire path."
   )
-  .demand(3)
+  .demand(3, 4)
   .option('n', {
-    alias: 'dry-run',
+    alias: ['dry', 'dry-run'],
     description: 'Test the command.',
     type: 'boolean'
   })
@@ -103,7 +103,7 @@ let [targetPath, findPattern, replacePattern, ignorePattern] = argv._
 let ignoreDirs = argv.d || argv['ignore-dirs']
 let ignoreFiles = argv.f || argv['ignore-files']
 let recursive = argv.r || argv['recursive']
-let dry = argv.n || argv['dry']
+let dry = argv.n || argv['dry'] || argv['dry-run']
 let silent = argv.s || argv['silent']
 
 function error(...args) {
