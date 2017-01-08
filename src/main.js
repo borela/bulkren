@@ -102,9 +102,9 @@ let [targetPath, findPattern, replacePattern, ignorePattern] = argv._
 
 let ignoreDirs = argv.d || argv['ignore-dirs']
 let ignoreFiles = argv.f || argv['ignore-files']
-let recursive = argv.r || argv['recursive']
-let dry = argv.n || argv['dry'] || argv['dry-run']
-let silent = argv.s || argv['silent']
+let recursive = argv.r || argv.recursive
+let dry = argv.n || argv.dry || argv['dry-run']
+let silent = argv.s || argv.silent
 
 function error(...args) {
   console.error(...args)
