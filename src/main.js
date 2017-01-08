@@ -138,9 +138,32 @@ if (ignorePattern) {
   }
 }
 
-const DRY_LABEL = dry ? chalk.blue('[DRY]') : ''
+const DRY_LABEL = chalk.blue('[DRY]')
 const FAILED_LABEL = chalk.red('[FAILED]')
 const RENAMED_LABEL = chalk.green('[RENAMED]')
+
+function logPathDiff(node) {
+  let parent = node.parent + path.sep
+  let nameDiff = diffChars(node.name, node.newName)
+
+  let oldPath = nameDiff.filter(char => !char.added)
+    .reduce(
+      (result, {removed, value}) =>
+        result + (removed ? chalk.red(value) : value),
+      parent
+    )
+
+  let newPath = nameDiff.filter(char => !char.removed)
+    .reduce(
+      (result, {added, value}) =>
+        result + (added ? chalk.green(value) : value),
+      parent
+    )
+
+  log(oldPath, chalk.blue('=>'))
+  log(newPath)
+  log('')
+}
 
 ls(targetPath, {
   ignore: ignorePattern,
@@ -151,41 +174,27 @@ ls(targetPath, {
   .filter(node => findPattern.test(node.name))
   // This is required so that we can work on the deepest nodes first.
   .then(nodes => sortBy(nodes, 'path').reverse())
-  // Calculate the new path and name.
-  .map(node => {
-    let newName = node.name.replace(findPattern, replacePattern)
-    let newPath = path.join(node.parent, newName)
-    return {...node, newPath, newName}
-  })
   // Execute the action if its not a dry run.
   .each(node => {
-    if (!dry) {
+    node.newName = node.name.replace(findPattern, replacePattern)
+    node.newPath = path.join(node.parent, node.newName)
+
+    if (dry) {
+      log(DRY_LABEL, RENAMED_LABEL)
+      logPathDiff(node)
+      return
+    }
+
+    try {
       // We want this to be synchronous to make sure we are renaming the deepest
       // nodes first.
       fs.renameSync(node.path, node.newPath)
+    } catch (e) {
+      log(FAILED_LABEL)
+      logPathDiff(node)
+      error(e)
     }
-    return node
-  })
-  // Check if it needs to output any messages.
-  .then(nodes => silent ? [] : nodes)
-  // Output the sucess message.
-  .each(node => {
-    log(DRY_LABEL, RENAMED_LABEL)
 
-    let parent = node.parent + path.sep
-    let nameDiff = diffChars(node.name, node.newName)
-
-    let oldPath = nameDiff.filter(char => !char.added)
-      .reduce((result, {removed, value}) =>
-        result + (removed ? chalk.red(value) : value)
-      , parent)
-
-    let newPath = nameDiff.filter(char => !char.removed)
-      .reduce((result, {added, value}) =>
-        result + (added ? chalk.green(value) : value)
-      , parent)
-
-    log(oldPath, chalk.blue('=>'))
-    log(newPath)
-    log('')
+    log(RENAMED_LABEL)
+    logPathDiff(node)
   })
