@@ -27,19 +27,19 @@ yargonaut.style('blue')
   .errorsStyle('red')
 
 let argv = yargs.usage(
-    "bren \t <path> <find> <replace> [ignore] [options]"
-    + "\n"
-    + "bulkren \t <path> <find> <replace> [ignore] [options]"
-    + "\n\n"
-    + "<path> \t Path to search the nodes."
-    + "\n\n"
-    + "<find> \t Regex used to match the node’s name. It applies only to the"
-    + "          node’s name, not the entire path."
-    + "\n\n"
-    + "<replace> \t A pattern for the new name. Use $1, $2, $n... to reference"
-    + "             capturing groups from the find pattern."
-    + "\n\n"
-    + "[ignore] \t Regex used to ignore nodes. It applies to the entire path."
+    'bren \t <path> <find> <replace> [ignore] [options]'
+    + '\n'
+    + 'bulkren \t <path> <find> <replace> [ignore] [options]'
+    + '\n\n'
+    + '<path> \t Path to search the nodes.'
+    + '\n\n'
+    + '<find> \t Regex used to match the node’s name. It applies only to the'
+    + '          node’s name, not the entire path.'
+    + '\n\n'
+    + '<replace> \t A pattern for the new name. Use $1, $2, $n... to reference'
+    + '             capturing groups from the find pattern.'
+    + '\n\n'
+    + '[ignore] \t Regex used to ignore nodes. It applies to the entire path.'
   )
   .demand(3, 4)
   .option('n', {
@@ -69,22 +69,22 @@ let argv = yargs.usage(
   })
   .example(
     'bren . "/foo/i" ../bar baz -d',
-    "Find nodes with the name “foo”(case insensitive), move it to the parent"
-    + " directory and rename it to “bar”. Any path containing “baz” is ignored."
-    + " Directories named “foo” won’t be affected because of the flag “-d”."
+    'Find nodes with the name “foo”(case insensitive), move it to the parent'
+    + ' directory and rename it to “bar”. Any path containing “baz” is ignored.'
+    + ' Directories named “foo” won’t be affected because of the flag “-d”.'
   )
   .example('','')
   .example(
     'bren . foo ../bar baz -d',
-    "Find nodes with the name “foo”(case sensitive), move it to the parent"
-    + " directory and rename it to “bar”. Any path containing “baz” is ignored."
-    + " Directories named “foo” won’t be affected because of the flag “-d”."
+    'Find nodes with the name “foo”(case sensitive), move it to the parent'
+    + ' directory and rename it to “bar”. Any path containing “baz” is ignored.'
+    + ' Directories named “foo” won’t be affected because of the flag “-d”.'
   )
   .example('','')
   .example(
     'bren . "/(foo)bar/i" "$1baz" -d',
-    "Find nodes with the name “foobar”(case insensitive), and rename it to “foobaz”."
-    + "  Directories named “foobar” won’t be affected because of the flag “-d”."
+    'Find nodes with the name “foobar”(case insensitive), and rename it to “foobaz”.'
+    + '  Directories named “foobar” won’t be affected because of the flag “-d”.'
   )
   .showHelpOnFail(true)
   .help(
