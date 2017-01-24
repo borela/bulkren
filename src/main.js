@@ -11,22 +11,22 @@
 // the License.
 // @flow
 
-import chalk from 'chalk'
-import fs from 'graceful-fs'
+import Chalk from 'chalk'
+import Fs from 'graceful-fs'
 import ls from 'ls-async'
-import path from 'path'
+import Path from 'path'
 import sortBy from 'sort-array'
 import toRegexp from 'str-to-regexp'
-import yargonaut from 'yargonaut'
-import yargs from 'yargs'
+import Yargonaut from 'yargonaut'
+import Yargs from 'yargs'
 import {diffChars} from 'diff'
 
 import packageInfo from '../package'
 
-yargonaut.style('blue')
+Yargonaut.style('blue')
   .errorsStyle('red')
 
-let argv = yargs.usage(
+let argv = Yargs.usage(
     'bren \t <path> <find> <replace> [ignore] [options]'
     + '\n'
     + 'bulkren \t <path> <find> <replace> [ignore] [options]'
@@ -117,7 +117,7 @@ function log(...args) {
 
 // Get the full target path.
 try {
-  targetPath = path.resolve(targetPath)
+  targetPath = Path.resolve(targetPath)
 } catch (e) {
   error(`Invalid target path "${targetPath}".`)
 }
@@ -138,29 +138,29 @@ if (ignorePattern) {
   }
 }
 
-const DRY_LABEL = chalk.blue('[DRY]')
-const FAILED_LABEL = chalk.red('[FAILED]')
-const RENAMED_LABEL = chalk.green('[RENAMED]')
+const DRY_LABEL = Chalk.blue('[DRY]')
+const FAILED_LABEL = Chalk.red('[FAILED]')
+const RENAMED_LABEL = Chalk.green('[RENAMED]')
 
 function logPathDiff(node) {
-  let parent = node.parent + path.sep
+  let parent = node.parent + Path.sep
   let nameDiff = diffChars(node.name, node.newName)
 
   let oldPath = nameDiff.filter(char => !char.added)
     .reduce(
       (result, {removed, value}) =>
-        result + (removed ? chalk.red(value) : value),
+        result + (removed ? Chalk.red(value) : value),
       parent
     )
 
   let newPath = nameDiff.filter(char => !char.removed)
     .reduce(
       (result, {added, value}) =>
-        result + (added ? chalk.green(value) : value),
+        result + (added ? Chalk.green(value) : value),
       parent
     )
 
-  log(oldPath, chalk.blue('=>'))
+  log(oldPath, Chalk.blue('=>'))
   log(newPath)
   log('')
 }
@@ -177,7 +177,7 @@ ls(targetPath, {
   // Execute the action if its not a dry run.
   .each(node => {
     node.newName = node.name.replace(findPattern, replacePattern)
-    node.newPath = path.join(node.parent, node.newName)
+    node.newPath = Path.join(node.parent, node.newName)
 
     if (dry) {
       log(DRY_LABEL, RENAMED_LABEL)
@@ -188,7 +188,7 @@ ls(targetPath, {
     try {
       // We want this to be synchronous to make sure we are renaming the deepest
       // nodes first.
-      fs.renameSync(node.path, node.newPath)
+      Fs.renameSync(node.path, node.newPath)
     } catch (e) {
       log(FAILED_LABEL)
       logPathDiff(node)

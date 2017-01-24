@@ -13,7 +13,7 @@
     "build": "npm run clean && run-p build:*",
     "build:target": "webpack --progress --display-error-details",
     "dev": "npm run clean && run-p dev:*",
-    "dev:target": "webpack --progress --watch --display-error-details",
+    "dev:target": "webpack --progress --display-error-details --watch ",
     "dist": "npm run clean && run-p dist:*",
     "dist:target": "cross-env NODE_ENV=production webpack --progress --display-error-details",
     "start": "npm run dev"
