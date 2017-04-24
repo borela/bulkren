@@ -106,12 +106,14 @@ let dry = argv.n || argv.dry || argv['dry-run']
 let silent = argv.s || argv.silent
 
 function error(...args) {
-  console.error(...args)
+  if (!silent)
+    console.error(...args)
   process.exit(-1)
 }
 
 function log(...args) {
-  console.log(...args)
+  if (!silent)
+    console.log(...args)
 }
 
 // Get the full target path.
