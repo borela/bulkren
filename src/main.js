@@ -19,14 +19,14 @@ import sortBy from 'sort-array'
 import toRegexp from 'str-to-regexp'
 import Yargonaut from 'yargonaut'
 import Yargs from 'yargs'
-import {diffChars} from 'diff'
+import { diffChars } from 'diff'
 
 import packageInfo from '../package'
 
 Yargonaut.style('blue')
   .errorsStyle('red')
 
-let argv = Yargs.usage(
+let { argv } = Yargs.usage(
     'bren \t <path> <find> <replace> [ignore] [options]'
     + '\n'
     + 'bulkren \t <path> <find> <replace> [ignore] [options]'
@@ -43,7 +43,7 @@ let argv = Yargs.usage(
   )
   .demand(3, 4)
   .option('n', {
-    alias: ['dry', 'dry-run'],
+    alias: [ 'dry', 'dry-run' ],
     description: 'Test the command.',
     type: 'boolean'
   })
@@ -73,14 +73,14 @@ let argv = Yargs.usage(
     + ' directory and rename it to “bar”. Any path containing “baz” is ignored.'
     + ' Directories named “foo” won’t be affected because of the flag “-d”.'
   )
-  .example('','')
+  .example('', '')
   .example(
     'bren . foo ../bar baz -d',
     'Find nodes with the name “foo”(case sensitive), move it to the parent'
     + ' directory and rename it to “bar”. Any path containing “baz” is ignored.'
     + ' Directories named “foo” won’t be affected because of the flag “-d”.'
   )
-  .example('','')
+  .example('', '')
   .example(
     'bren . "/(foo)bar/i" "$1baz" -d',
     'Find nodes with the name “foobar”(case insensitive), and rename it to “foobaz”.'
@@ -96,9 +96,8 @@ let argv = Yargs.usage(
     `Show ${packageInfo.name} version.`,
     () => packageInfo.version
   )
-  .argv
 
-let [targetPath, findPattern, replacePattern, ignorePattern] = argv._
+let [ targetPath, findPattern, replacePattern, ignorePattern ] = argv._
 
 let ignoreDirs = argv.d || argv['ignore-dirs']
 let ignoreFiles = argv.f || argv['ignore-files']
@@ -148,14 +147,14 @@ function logPathDiff(node) {
 
   let oldPath = nameDiff.filter(char => !char.added)
     .reduce(
-      (result, {removed, value}) =>
+      (result, { removed, value }) =>
         result + (removed ? Chalk.red(value) : value),
       parent
     )
 
   let newPath = nameDiff.filter(char => !char.removed)
     .reduce(
-      (result, {added, value}) =>
+      (result, { added, value }) =>
         result + (added ? Chalk.green(value) : value),
       parent
     )
