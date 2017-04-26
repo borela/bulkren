@@ -84,7 +84,7 @@ let { argv } = Yargs.usage(
   .example(
     'bren . "/(foo)bar/i" "$1baz" -d',
     'Find nodes with the name “foobar”(case insensitive), and rename it to “foobaz”.'
-    + '  Directories named “foobar” won’t be affected because of the flag “-d”.'
+    + ' Directories named “foobar” won’t be affected because of the flag “-d”.'
   )
   .showHelpOnFail(true)
   .help(
