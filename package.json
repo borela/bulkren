@@ -9,36 +9,16 @@
   },
   "scripts": {
     "check": "flow check || exit 0",
-    "clean": "rimraf \"build/!(.git)\"",
-    "build": "npm run clean && run-p build:*",
-    "build:target": "webpack --progress --display-error-details",
+    "clean": "rimraf \"build/!(.git)\" \"alias/bren/build/!(.git)\"",
+    "build": "npm run clean && run-s build:*",
+    "build:package": "webpack --progress --display-error-details",
+    "build:alias": "cpx build/**/* alias/bren/build",
     "dev": "npm run clean && run-p dev:*",
-    "dev:target": "webpack --progress --display-error-details --watch ",
-    "dist": "npm run clean && run-p dist:*",
-    "dist:target": "cross-env NODE_ENV=production webpack --progress --display-error-details",
+    "dev:package": "webpack --progress --display-error-details --watch",
+    "dist": "npm run clean && run-s dist:*",
+    "dist:package": "cross-env NODE_ENV=production webpack --progress --display-error-details",
+    "dist:alias": "cpx build alias/bren/build",
     "start": "npm run dev"
-  },
-  "eslintConfig": {
-    "extends": "ctrine-js-node"
-  },
-  "babel": {
-    "plugins": [
-      "transform-flow-strip-types",
-      "transform-decorators-legacy",
-      "transform-class-properties",
-      "transform-export-extensions",
-      "transform-object-rest-spread"
-    ],
-    "presets": [
-      [
-        "latest",
-        {
-          "es2015": {
-            "modules": false
-          }
-        }
-      ]
-    ]
   },
   "repository": {
     "type": "git",
