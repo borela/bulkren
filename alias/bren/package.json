@@ -1,12 +1,8 @@
 {
   "name": "bren",
-  "version": "3.6.1",
+  "version": "3.6.5",
   "description": "Use “bulkren” instead: https://github.com/borela/bulkren",
   "license": "Apache-2.0",
-  "bin": {
-    "bren": "build/index.js",
-    "bulkren": "build/index.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/borela/bulkren.git"
@@ -28,20 +24,5 @@
       "email": "alexandre@borela.tech",
       "url": "http://www.borela.tech"
     }
-  ],
-  "dependencies": {
-    "chalk": "^1.1.3",
-    "diff": "^3.2.0",
-    "graceful-fs": "^4.1.11",
-    "ls-async": "^3.0.0",
-    "sort-array": "^1.1.1",
-    "source-map-support": "^0.4.8",
-    "str-to-regexp": "^1.0.0",
-    "yargonaut": "^1.1.2",
-    "yargs": "^6.5.0"
-  },
-  "devDependencies": {
-    "ctrine-webpack-settings-cli": "^2.0.1",
-    "eslint-config-ctrine-js-node": "^1.0.0"
-  }
+  ]
 }
