@@ -1,6 +1,6 @@
 {
   "name": "bulkren",
-  "version": "3.6.1",
+  "version": "3.6.5",
   "description": "Bulk rename utility that uses regex instead of globbing.",
   "license": "Apache-2.0",
   "bin": {
@@ -8,16 +8,10 @@
     "bulkren": "build/index.js"
   },
   "scripts": {
-    "check": "flow check || exit 0",
-    "clean": "rimraf \"build/!(.git)\" \"alias/bren/build/!(.git)\"",
-    "build": "npm run clean && run-s build:*",
-    "build:package": "webpack --progress --display-error-details",
-    "build:alias": "cpx build/**/* alias/bren/build",
-    "dev": "npm run clean && run-p dev:*",
-    "dev:package": "webpack --progress --display-error-details --watch",
-    "dist": "npm run clean && run-s dist:*",
-    "dist:package": "cross-env NODE_ENV=production webpack --progress --display-error-details",
-    "dist:alias": "cpx build alias/bren/build",
+    "clean": "rimraf \"build/!(.git)\"",
+    "build": "npm run clean && webpack --progress --display-error-details",
+    "dev": "npm run clean && webpack --progress --display-error-details --watch",
+    "dist": "npm run clean && cross-env NODE_ENV=production webpack --progress --display-error-details",
     "start": "npm run dev"
   },
   "repository": {
