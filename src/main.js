@@ -41,7 +41,7 @@ let { argv } = Yargs.usage(
     + '\n\n'
     + '[ignore] \t Regex used to ignore nodes. It applies to the entire path.'
   )
-  .demand(3, 4)
+  .command('* <path> <find> <replace> [ignore]')
   .option('n', {
     alias: [ 'dry', 'dry-run' ],
     description: 'Test the command.',
@@ -94,8 +94,9 @@ let { argv } = Yargs.usage(
   .version(
     'version',
     `Show ${packageInfo.name} version.`,
-    () => packageInfo.version
+    packageInfo.version
   )
+
 
 let [ targetPath, findPattern, replacePattern, ignorePattern ] = argv._
 

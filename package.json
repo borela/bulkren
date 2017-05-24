@@ -1,6 +1,6 @@
 {
   "name": "bulkren",
-  "version": "3.6.6",
+  "version": "3.6.9",
   "description": "Bulk rename utility that uses regex instead of globbing.",
   "license": "Apache-2.0",
   "bin": {
