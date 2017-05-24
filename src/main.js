@@ -14,14 +14,13 @@
 import Chalk from 'chalk'
 import Fs from 'graceful-fs'
 import ls from 'ls-async'
+import packageInfo from '../package'
 import Path from 'path'
 import sortBy from 'sort-array'
 import toRegexp from 'str-to-regexp'
 import Yargonaut from 'yargonaut'
 import Yargs from 'yargs'
 import { diffChars } from 'diff'
-
-import packageInfo from '../package'
 
 Yargonaut.style('blue')
   .errorsStyle('red')
