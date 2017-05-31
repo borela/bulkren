@@ -48,7 +48,6 @@
     "yargs": "^8.0.1"
   },
   "devDependencies": {
-    "ctrine-webpack-settings-cli": "^4.0.0",
-    "eslint-config-ctrine-js-node": "^2.0.0"
+    "ctrine-webpack-settings-cli": "^5.0.0"
   }
 }
