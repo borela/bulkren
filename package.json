@@ -9,9 +9,9 @@
   },
   "scripts": {
     "clean": "rimraf \"build/!(.git)\"",
-    "build": "npm run clean && webpack --progress --display-error-details",
-    "dev": "npm run clean && webpack --progress --display-error-details --watch",
-    "dist": "npm run clean && cross-env NODE_ENV=production webpack --progress --display-error-details",
+    "build": "npm run clean && webpack",
+    "dev": "npm run clean && webpack -w",
+    "dist": "npm run clean && cross-env NODE_ENV=production webpack",
     "start": "npm run dev"
   },
   "repository": {
